@@ -42,18 +42,35 @@ namespace RepositoryPattarnUOW.Api.Controllers
         public async Task<IEnumerable<Teacher>> ListOf_OrderByDescending() => await _unitOfWork.Teachers.ListOfOrderBy(null, o => o.Id, OrderBy.Descending);
 
 
+
         [HttpPost("Add")]
-        public async Task<IActionResult> Add(Teacher t) => Ok(await _unitOfWork.Teachers.Add(t));
+        public async Task<IActionResult> Add(Teacher t)
+        {
+            var teacher = await _unitOfWork.Teachers.Add(t);
+            _unitOfWork.Complete();
+            return Ok(teacher);
+        }
 
         [HttpPut("Update")]
-        public IActionResult Update(Teacher t) => Ok(_unitOfWork.Teachers.Update(t));
-
+        public IActionResult Update(Teacher t)
+        {
+            var teacher = _unitOfWork.Teachers.Update(t);
+            _unitOfWork.Complete();
+            return Ok(teacher);
+        }
         [HttpDelete("Delete")]
-        public void Delete(Teacher t) => _unitOfWork.Teachers.Delete(t);
-
+        public void Delete(Teacher t)
+        {
+            _unitOfWork.Teachers.Delete(t);
+            _unitOfWork.Complete();
+        }
 
         [HttpDelete("DeleteById")]
-        public void DeleteById(int Id) => _unitOfWork.Teachers.Delete(Id);
+        public void DeleteById(int Id)
+        {
+            _unitOfWork.Teachers.Delete(Id);
+            _unitOfWork.Complete();
+        }
 
         [HttpGet("Count")]
         public void Count(string name) => _unitOfWork.Teachers.Count(t => t.Name == name);

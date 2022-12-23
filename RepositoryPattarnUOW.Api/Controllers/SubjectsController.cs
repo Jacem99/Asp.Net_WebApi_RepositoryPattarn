@@ -46,17 +46,36 @@ namespace RepositoryPattarnUOW.Api.Controllers
 
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add(Subject t) => Ok(await _unitOfWork.Subjects.Add(t));
+        public async Task<IActionResult> Add(Subject s)
+        {
+            var subject = await _unitOfWork.Subjects.Add(s);
+            _unitOfWork.Complete();
+           return Ok(subject);
+        }
 
         [HttpPut("Update")]
-        public IActionResult Update(Subject t) => Ok(_unitOfWork.Subjects.Update(t));
+        public IActionResult Update(Subject s)
+        {
+            var subject = _unitOfWork.Subjects.Update(s);
+            _unitOfWork.Complete();
+             return  Ok(subject);
+        }
+
 
         [HttpDelete("Delete")]
-        public void Delete(Subject t) => _unitOfWork.Subjects.Delete(t);
+        public void Delete(Subject t) 
+        {
+            _unitOfWork.Subjects.Delete(t);
+            _unitOfWork.Complete();
+        }
 
 
         [HttpDelete("DeleteById")]
-        public void DeleteById(int Id) => _unitOfWork.Subjects.Delete(Id);
+        public void DeleteById(int Id)
+        {
+            _unitOfWork.Subjects.Delete(Id);
+            _unitOfWork.Complete();
+        }
 
     }
 }

@@ -93,26 +93,21 @@ namespace RepositoryPattarnUOW.EF.Repository
         public async Task<T> Add(T entity)
         {
            await _dbContext.Set<T>().AddAsync(entity);
-           await _dbContext.SaveChangesAsync();
             return entity;
         }
         public T Update(T entity)
         {
              _dbContext.Set<T>().Update(entity);
-             _dbContext.SaveChanges();
-
             return entity;
         }
         public void Delete(T entity)
         {
              _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChanges();
         }
         public void Delete(int Id)
         {
             var entity =_dbContext.Set<T>().Find(Id);
             _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChanges();
         }
         public int Count(Expression<Func<T, bool>> criteria = null)
         {
