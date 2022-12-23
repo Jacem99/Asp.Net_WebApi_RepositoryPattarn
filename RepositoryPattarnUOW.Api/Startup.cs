@@ -37,8 +37,8 @@ namespace RepositoryPattarnUOW.Api
             option.UseSqlServer(Configuration.GetConnectionString("RepoConnection"),
             b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-          //  services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers();
             services.AddControllersWithViews().AddNewtonsoftJson(option =>

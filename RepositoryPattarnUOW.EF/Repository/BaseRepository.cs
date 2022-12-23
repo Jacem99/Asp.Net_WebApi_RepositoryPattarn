@@ -41,18 +41,18 @@ namespace RepositoryPattarnUOW.EF.Repository
 
             return await query.AsSplitQuery().AsNoTracking().ToListAsync();
         }
-        public async Task<IEnumerable<T>> ListOfInclude(Expression<Func<T, bool>> match, string[] includes = null)
+        public async Task<IEnumerable<T>> ListOfInclude(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
-            IQueryable<T> query = _dbContext.Set<T>().Where(match);
+            IQueryable<T> query = _dbContext.Set<T>().Where(criteria);
             if (includes != null)
                 foreach (var include in includes)
                     query = query.Include(include);
 
             return await query.AsSplitQuery().AsNoTracking().ToListAsync();
         }
-        public async Task<IEnumerable<T>> ListOfInclude(Expression<Func<T, bool>> match, Expression<Func<T, object>> orderBy =null, string[] includes = null , string defaultOrderBy = OrderBy.Ascending)
+        public async Task<IEnumerable<T>> ListOfInclude(Expression<Func<T, bool>> criteria, Expression<Func<T, object>> orderBy =null, string[] includes = null , string defaultOrderBy = OrderBy.Ascending)
         {
-            IQueryable<T> query = _dbContext.Set<T>().Where(match);
+            IQueryable<T> query = _dbContext.Set<T>().Where(criteria);
             if (includes != null)
                 foreach (var include in includes)
                     query = query.Include(include);
@@ -68,11 +68,11 @@ namespace RepositoryPattarnUOW.EF.Repository
 
             return await query.AsSplitQuery().AsNoTracking().ToListAsync();
         }
-        public async Task<IEnumerable<T>> ListOfOrderBy(Expression<Func<T, bool>> match = null, Expression<Func<T, object>> orderBy = null, string defaultOrderBy = "ASC")
+        public async Task<IEnumerable<T>> ListOfOrderBy(Expression<Func<T, bool>> criteria = null, Expression<Func<T, object>> orderBy = null, string defaultOrderBy = "ASC")
         {
             IQueryable<T> query = _dbContext.Set<T>();
-            if (match != null)
-                query = query.Where(match);
+            if (criteria != null)
+                query = query.Where(criteria);
 
             if (orderBy != null)
             {
@@ -114,12 +114,12 @@ namespace RepositoryPattarnUOW.EF.Repository
             _dbContext.Set<T>().Remove(entity);
             _dbContext.SaveChanges();
         }
-        public int Count(Expression<Func<T, bool>> match = null)
+        public int Count(Expression<Func<T, bool>> criteria = null)
         {
            IQueryable<T> query = _dbContext.Set<T>();
-            if(match != null)
+            if(criteria != null)
             {
-                return query.Count(match);
+                return query.Count(criteria);
             }
             return query.Count();
         }

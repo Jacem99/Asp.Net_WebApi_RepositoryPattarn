@@ -14,51 +14,52 @@ namespace RepositoryPattarnUOW.Api.Controllers
     [ApiController]
     public class TeachersController : ControllerBase
     {
-        public readonly IBaseRepository<Teacher> _teacherRepository;
-        public TeachersController(IBaseRepository<Teacher> baseRepository)
+
+        public readonly IUnitOfWork _unitOfWork;
+        public TeachersController(IUnitOfWork unitOfWork)
         {
-            _teacherRepository = baseRepository;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("GetById")]
-        public async Task< IActionResult> GetById() => Ok(await _teacherRepository.GetById(1));
+        public async Task< IActionResult> GetById(int Id) => Ok(await _unitOfWork.Teachers.GetById(Id));
 
         [HttpGet("GetByName")]
-        public async Task<IActionResult> GetByName() => Ok(await _teacherRepository.GetByName(t => t.Name == "ahmed"));
+        public async Task<IActionResult> GetByName(string name) => Ok(await _unitOfWork.Teachers.GetByName(t => t.Name == name.Trim()));
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll() => Ok(await _teacherRepository.GetAll());
+        public async Task<IActionResult> GetAll() => Ok(await _unitOfWork.Teachers.GetAll());
 
         [HttpGet("GetAllAscending")]
-        public async Task<IActionResult> GetAllAcending() => Ok(await _teacherRepository.GetAll(o=>o.Id));
+        public async Task<IActionResult> GetAllAcending() => Ok(await _unitOfWork.Teachers.GetAll(o=>o.Id));
         [HttpGet("GetAllDescending")]
-        public async Task<IActionResult> GetAllDescending() => Ok(await _teacherRepository.GetAll(o=>o.Id , OrderBy.Descending));
+        public async Task<IActionResult> GetAllDescending() => Ok(await _unitOfWork.Teachers.GetAll(o=>o.Id , OrderBy.Descending));
 
         [HttpGet("ListOf_OrderByAscnending_withId")]
-        public async Task<IEnumerable<Teacher>> ListOf_OrderByAscnending() => await _teacherRepository.ListOfOrderBy(null, o => o.Id, OrderBy.Ascending);
+        public async Task<IEnumerable<Teacher>> ListOf_OrderByAscnending() => await _unitOfWork.Teachers.ListOfOrderBy(null, o => o.Id, OrderBy.Ascending);
         
         [HttpGet("ListOf_OrderByDescending_withId")]
-        public async Task<IEnumerable<Teacher>> ListOf_OrderByDescending() => await _teacherRepository.ListOfOrderBy(null, o => o.Id, OrderBy.Descending);
+        public async Task<IEnumerable<Teacher>> ListOf_OrderByDescending() => await _unitOfWork.Teachers.ListOfOrderBy(null, o => o.Id, OrderBy.Descending);
 
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add(Teacher t) => Ok(await _teacherRepository.Add(t));
+        public async Task<IActionResult> Add(Teacher t) => Ok(await _unitOfWork.Teachers.Add(t));
 
         [HttpPut("Update")]
-        public IActionResult Update(Teacher t) => Ok(_teacherRepository.Update(t));
+        public IActionResult Update(Teacher t) => Ok(_unitOfWork.Teachers.Update(t));
 
         [HttpDelete("Delete")]
-        public void Delete(Teacher t) => _teacherRepository.Delete(t);
+        public void Delete(Teacher t) => _unitOfWork.Teachers.Delete(t);
 
 
         [HttpDelete("DeleteById")]
-        public void DeleteById(int Id) => _teacherRepository.Delete(Id);
+        public void DeleteById(int Id) => _unitOfWork.Teachers.Delete(Id);
 
         [HttpGet("Count")]
-        public void Count(string name) => _teacherRepository.Count(t => t.Name == name);
+        public void Count(string name) => _unitOfWork.Teachers.Count(t => t.Name == name);
 
         [HttpGet("CountAll")]
-        public void CountAll() => _teacherRepository.Count();
+        public void CountAll() => _unitOfWork.Teachers.Count();
 
     }
 }
